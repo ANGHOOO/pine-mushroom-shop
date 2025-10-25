@@ -137,6 +137,9 @@ flowchart LR
 - 지금은 Layerd 아키텍처의 일부 예시일 뿐이므로, 필요에 따라 직접 아키텍처를 설계하고 구성해보세요!
   - 하지만 Layer간 의존성은 항상 한 쪽 방향으로 향해야 한다는 걸 명심해주시길 바랍니다.
 
+### Table ERD
+<img width="1901" height="998" alt="image" src="https://github.com/user-attachments/assets/b33b7642-61f1-499a-8488-dc0d4657f306" />
+
 ### How to test
 
 ```bash
