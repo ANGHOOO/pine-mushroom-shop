@@ -2,22 +2,19 @@ import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.database import close_db, create_db_and_tables, engine
+from src.database import engine, database_manager
 from src.main import app
 
 
 @pytest_asyncio.fixture(scope="function")
 async def client() -> AsyncClient:
-    await create_db_and_tables()
+    async with database_manager():
+        transport = ASGITransport(app=app)
 
-    transport = ASGITransport(app=app)
-
-    async with AsyncClient(
-        transport=transport, base_url="http://127.0.0.1:8000"
-    ) as client:
-        yield client
-
-    await close_db()
+        async with AsyncClient(
+            transport=transport, base_url="http://127.0.0.1:8000"
+        ) as client:
+            yield client
 
 
 @pytest_asyncio.fixture(scope="function")
