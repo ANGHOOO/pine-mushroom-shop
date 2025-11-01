@@ -4,7 +4,7 @@ from datetime import date, datetime
 from sqlalchemy import BigInteger, String, Boolean, Enum, Date, DateTime, Integer, func
 from sqlalchemy.orm import mapped_column, Mapped
 
-from src.models import Base
+from src.models.base import Base
 
 
 class MemberGender(str, enum.Enum):

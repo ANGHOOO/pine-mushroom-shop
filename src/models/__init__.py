@@ -1,5 +1,6 @@
-from sqlalchemy.orm import DeclarativeBase
+from src.models.base import Base
+from src.models.member import Member
+from src.models.product import Product
 
 
-class Base(DeclarativeBase):
-    pass
+__all__ = ["Base", "Member", "Product"]
