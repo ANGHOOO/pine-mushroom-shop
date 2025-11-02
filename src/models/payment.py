@@ -1,7 +1,16 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import BigInteger, ForeignKey, Integer, String, DateTime, func, Boolean
+from sqlalchemy import (
+    BigInteger,
+    ForeignKey,
+    Integer,
+    String,
+    DateTime,
+    func,
+    Boolean,
+    Text,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.base import Base
@@ -39,3 +48,37 @@ class Payment(Base):
     # Relationship
     orders: Mapped["Orders"] = relationship("Orders", back_populates="payment")
     member: Mapped["Member"] = relationship("Member", back_populates="payment")
+    payment_cancel: Mapped["PaymentCancel"] = relationship(
+        "PaymentCancel", back_populates="payment"
+    )
+
+
+class PaymentCancel(Base):
+    __tablename__ = "payment_cancel"
+    # Columns
+    payment_cancel_id: Mapped[int] = mapped_column(
+        BigInteger, primary_key=True, autoincrement=True
+    )
+    payment_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("payment.payment_id"), nullable=False
+    )
+    member_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("member.member_id"), nullable=False
+    )
+    requested_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    processed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    is_canceled: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    cancel_reason: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now(), onupdate=func.now()
+    )
+    is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    # Relationship
+    payment: Mapped[list["Payment"]] = relationship(
+        "Payment", back_populates="payment_cancel"
+    )
+    member: Mapped["Member"] = relationship("Member", back_populates="payment_cancel")

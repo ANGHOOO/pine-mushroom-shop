@@ -20,7 +20,7 @@ from src.models.base import Base
 if TYPE_CHECKING:
     from src.models.orders import Orders
     from src.models.coupon import MemberCoupon
-    from src.models.payment import Payment
+    from src.models.payment import Payment, PaymentCancel
 
 
 class MemberGender(str, enum.Enum):
@@ -67,6 +67,9 @@ class Member(Base):
         "PointsHistory", back_populates="member"
     )
     payment: Mapped[list["Payment"]] = relationship("Payment", back_populates="member")
+    payment_cancel: Mapped[list["PaymentCancel"]] = relationship(
+        "PaymentCancel", back_populates="member"
+    )
 
 
 class PointsHistory(Base):
