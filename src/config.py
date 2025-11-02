@@ -11,7 +11,11 @@ class Environ(StrEnum):
 
 
 def get_env_file_name(env_key: str) -> str:
-    env_key_normalized = env_key if env_key.upper() in Environ else Environ.DEV
+    if not env_key:
+        env_key_normalized = Environ.DEV
+    else:
+        env_key_normalized = env_key if env_key.upper() in Environ else Environ.DEV
+
     env_file_mapper: dict[Environ, str] = {
         Environ.PRD: ".env",
         Environ.DEV: ".env.dev",
