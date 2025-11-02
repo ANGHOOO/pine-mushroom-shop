@@ -80,3 +80,27 @@ class MemberCouponStatus(Base):
     member_coupon: Mapped["MemberCoupon"] = relationship(
         "MemberCoupon", back_populates="member_coupon_status"
     )
+
+
+class MemberCouponHistory(Base):
+    __tablename__ = "member_coupon_history"
+    # Columns
+    member_coupon_history_id: Mapped[int] = mapped_column(
+        BigInteger, primary_key=True, autoincrement=True
+    )
+    member_coupon_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("member_coupon.member_coupon_id"), nullable=False
+    )
+    previous_coupon_status: Mapped[str | None] = mapped_column(
+        String(50), nullable=True
+    )
+    current_coupon_status: Mapped[str] = mapped_column(String(50), nullable=False)
+    applied_discount_rate: Mapped[int] = mapped_column(Integer, nullable=False)
+    changed_reason: Mapped[str] = mapped_column(String(50), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=func.now()
+    )
+    # Relationship
+    member_coupon: Mapped["MemberCoupon"] = relationship(
+        "MemberCoupon", back_populates="member_coupon_history"
+    )
