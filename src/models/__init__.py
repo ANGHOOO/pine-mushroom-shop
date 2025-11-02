@@ -9,6 +9,7 @@ from src.models.member import Member, PointsHistory
 from src.models.orders import Orders, OrderProduct, OrderStatus
 from src.models.payment import Payment, PaymentCancel, PaymentStatus
 from src.models.product import Product
+from src.models.shipping import Shipping, ShippingStatus
 
 
 __all__ = [
@@ -26,4 +27,6 @@ __all__ = [
     "Payment",
     "PaymentCancel",
     "PaymentStatus",
+    "Shipping",
+    "ShippingStatus",
 ]
