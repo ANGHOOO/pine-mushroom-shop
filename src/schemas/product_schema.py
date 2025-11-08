@@ -29,19 +29,11 @@ class ProductCreate(BaseModel):
     product_status: ProductStatus = Field(
         ..., description="상품의 판매 상태 정보 (판매중, 품절)"
     )
-    product_price: int = Field(..., gt=0, description="상품의 판매 가격")
-    stock_quantity: int = Field(..., gt=0, description="상품의 남은 재고수량")
+    product_price: int = Field(..., ge=0, description="상품의 판매 가격")
+    stock_quantity: int = Field(..., ge=0, description="상품의 남은 재고수량")
     description: str | None = Field(None, description="상품에 대한 상세 설명")
 
 
 class ProductResponse(BaseModel):
     product_id: int
-    product_name: str
-    seller: str
-    origin: str
-    category: ProductCategory
-    product_status: ProductStatus
-    product_price: int
-    stock_quantity: int
-    description: str | None
     created_at: datetime
