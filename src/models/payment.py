@@ -32,6 +32,9 @@ class Payment(Base):
     member_coupon_id: Mapped[int] = mapped_column(
         BigInteger, ForeignKey("member_coupon.member_coupon_id"), nullable=False
     )
+    member_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("member.member_id"), nullable=False
+    )
     used_points: Mapped[int] = mapped_column(Integer, nullable=True)
     payment_type: Mapped[str] = mapped_column(String(50), nullable=False)
     payment_status: Mapped[str] = mapped_column(String(50), nullable=False)

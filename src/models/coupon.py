@@ -57,9 +57,12 @@ class MemberCoupon(Base):
     )
     # Relationship
     member: Mapped["Member"] = relationship("Member", back_populates="member_coupon")
-    coupon: Mapped["Coupon"] = relationship("Coupon", back_populates="member")
+    coupon: Mapped["Coupon"] = relationship("Coupon", back_populates="member_coupon")
     member_coupon_status: Mapped["MemberCouponStatus"] = relationship(
         "MemberCouponStatus", back_populates="member_coupon"
+    )
+    member_coupon_history: Mapped["MemberCouponHistory"] = relationship(
+        "MemberCouponHistory", back_populates="member_coupon"
     )
 
 

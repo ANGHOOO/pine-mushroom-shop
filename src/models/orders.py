@@ -38,7 +38,7 @@ class Orders(Base):
     )
     # Relationship
     order_product: Mapped[list["OrderProduct"]] = relationship(
-        "OrderProduct", back_populates="orders"
+        "OrderProduct", back_populates="order"
     )
     order_status: Mapped["OrderStatus"] = relationship(
         "OrderStatus", back_populates="orders"
@@ -91,6 +91,6 @@ class OrderStatus(Base):
         DateTime, nullable=False, default=func.now(), onupdate=func.now()
     )
     # Relationship
-    order: Mapped[list["Orders"]] = relationship(
+    orders: Mapped[list["Orders"]] = relationship(
         "Orders", back_populates="order_status"
     )
