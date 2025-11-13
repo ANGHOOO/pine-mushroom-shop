@@ -17,4 +17,3 @@ async def test_create_product_success(sample_product: ProductCreate, db: AsyncSe
     assert created_product.product_id == 1
     assert created_product.product_name == sample_product.product_name
     assert created_product.stock_quantity == sample_product.stock_quantity
-    # product_repository.assert_called_once_with()
