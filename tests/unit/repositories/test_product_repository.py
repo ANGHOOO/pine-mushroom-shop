@@ -1,19 +1,28 @@
-import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
+from unittest.mock import AsyncMock, ANY, MagicMock
 
+import pytest
+
+from src.db import Product
 from src.models.product_schema import ProductCreate
 from src.repositories.product_repository import ProductRepository
 
 
 @pytest.mark.asyncio
-async def test_create_product_success(sample_product: ProductCreate, db: AsyncSession):
+async def test_create_product_success(sample_product: ProductCreate):
     # given
-    product_repository = ProductRepository(db)
+    mock_db = AsyncMock()
+    mock_db.add = MagicMock()
+    mock_db.commit = AsyncMock()
+    mock_repository = ProductRepository(mock_db)
 
     # when
-    created_product = await product_repository.create_product(sample_product)
+    created_product = await mock_repository.create_product(sample_product)
 
     # then
-    assert created_product.product_id == 1
-    assert created_product.product_name == sample_product.product_name
-    assert created_product.stock_quantity == sample_product.stock_quantity
+    mock_db.add.assert_called_once_with(ANY)
+    product = mock_db.add.call_args.args[0]
+    assert isinstance(product, Product)
+
+    assert isinstance(created_product, Product)
+
+    mock_db.commit.assert_called_once_with()

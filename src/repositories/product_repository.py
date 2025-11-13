@@ -1,6 +1,8 @@
+from fastapi import Depends
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.database import get_db
 from src.core.logging_config import logger
 from src.errors.exceptions import (
     DatabaseError,
@@ -12,7 +14,7 @@ from src.models.product_schema import ProductCreate
 
 
 class ProductRepository:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession = Depends(get_db)):
         self.db = db
 
     async def create_product(self, product_data: ProductCreate) -> Product:

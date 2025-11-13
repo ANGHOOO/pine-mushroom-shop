@@ -1,28 +1,23 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 
 from src.db import Product
 from src.models.product_schema import ProductCreate
+from src.repositories.product_repository import ProductRepository
 from src.services.product_service import ProductService
 
 
 @pytest.mark.asyncio
-async def test_create_product(
-    sample_product: ProductCreate, saved_product: Product, mock_db: AsyncMock
-):
+async def test_create_product(sample_product: ProductCreate, saved_product: Product):
     # given
-    product_service = ProductService(mock_db)
+    mock_repository = AsyncMock(spec=ProductRepository)
+    mock_repository.create_product = AsyncMock(return_value=saved_product)
+    product_service = ProductService(product_repository=mock_repository)
 
     # when
-    with patch.object(
-        product_service.product_repository,
-        "create_product",
-        new_callable=AsyncMock,
-        return_value=saved_product,
-    ) as mock_product_service_product_repository:
-        result = await product_service.create_product(sample_product)
+    result = await product_service.create_product(sample_product)
 
     # then
-    assert result.product_id == saved_product.product_id
-    mock_product_service_product_repository.assert_called_once_with(sample_product)
+    mock_repository.create_product.assert_called_once_with(sample_product)
+    assert result == saved_product

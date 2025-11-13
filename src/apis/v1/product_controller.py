@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.database import get_db
 from src.core.logging_config import logger
 from src.errors.exceptions import ProductAlreadyExists
 from src.models.product_schema import ProductCreate, ProductResponse
@@ -13,9 +11,8 @@ router = APIRouter(prefix="/product", tags=["product"])
 @router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 async def create_product(
     product: ProductCreate,
-    db: AsyncSession = Depends(get_db),
+    product_service: ProductService = Depends(ProductService),
 ) -> ProductResponse:
-    product_service = ProductService(db)
     try:
         created_product = await product_service.create_product(product)
     except ProductAlreadyExists:

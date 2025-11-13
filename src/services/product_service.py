@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends
 
 from src.errors.exceptions import DatabaseConnectionError
 from src.db.models.product import Product
@@ -9,9 +9,10 @@ from src.core.logging_config import logger
 
 
 class ProductService:
-    def __init__(self, db: AsyncSession):
-        self.db = db
-        self.product_repository = ProductRepository(db)
+    def __init__(
+        self, product_repository: ProductRepository = Depends(ProductRepository)
+    ):
+        self.product_repository = product_repository
 
     async def create_product(self, product_data: ProductCreate) -> Product | None:
         try:
