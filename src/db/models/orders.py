@@ -4,13 +4,13 @@ from typing import TYPE_CHECKING
 from sqlalchemy import BigInteger, ForeignKey, String, DateTime, func, Boolean, Integer
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 
-from src.models.base import Base
+from src.db.models.base import Base
 
 if TYPE_CHECKING:
-    from src.models.member import Member
-    from src.models.product import Product
-    from src.models.payment import Payment
-    from src.models.shipping import Shipping
+    from src.db.models.member import Member
+    from src.db.models.product import Product
+    from src.db.models.payment import Payment
+    from src.db.models.shipping import Shipping
 
 
 class Orders(Base):
@@ -38,7 +38,7 @@ class Orders(Base):
     )
     # Relationship
     order_product: Mapped[list["OrderProduct"]] = relationship(
-        "OrderProduct", back_populates="orders"
+        "OrderProduct", back_populates="order"
     )
     order_status: Mapped["OrderStatus"] = relationship(
         "OrderStatus", back_populates="orders"
@@ -91,6 +91,6 @@ class OrderStatus(Base):
         DateTime, nullable=False, default=func.now(), onupdate=func.now()
     )
     # Relationship
-    order: Mapped[list["Orders"]] = relationship(
+    orders: Mapped[list["Orders"]] = relationship(
         "Orders", back_populates="order_status"
     )

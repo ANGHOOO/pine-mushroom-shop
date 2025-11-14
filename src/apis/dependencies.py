@@ -1,8 +1,10 @@
+from typing import AsyncGenerator
+
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.database import engine
+from src.core.database import async_engine
 
 
-async def get_session() -> AsyncSession:
-    async with AsyncSession(engine) as session:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    async with AsyncSession(async_engine) as session:
         yield session
