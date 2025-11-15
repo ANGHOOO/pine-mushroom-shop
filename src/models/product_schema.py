@@ -43,4 +43,13 @@ class ProductCreateResponse(BaseModel):
 
 class ProductResponse(BaseModel):
     product_id: int
+    product_name: str
+    seller: str
+    origin: str
+    category: ProductCategory
+    product_price: int
+    stock_quantity: int
+    description: str | None
     created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
